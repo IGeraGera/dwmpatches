@@ -1,8 +1,8 @@
-Only in b: blocks.h
-Only in b: dwmblocks
+Only in a: blocks.h
+Only in a: dwmblocks
 diff -up a/dwmblocks.c b/dwmblocks.c
---- a/dwmblocks.c	2020-12-19 02:50:53.775788071 +0200
-+++ b/dwmblocks.c	2020-12-19 02:45:12.511253313 +0200
+--- a/dwmblocks.c	2020-12-19 20:08:02.659269585 +0200
++++ b/dwmblocks.c	2020-12-19 20:07:04.385060580 +0200
 @@ -28,6 +28,7 @@ typedef struct {
  void dummysighandler(int num);
  #endif
@@ -51,8 +51,9 @@ diff -up a/dwmblocks.c b/dwmblocks.c
 +	struct sigaction sa;
  	for (unsigned int i = 0; i < LENGTH(blocks); i++) {
 -		if (blocks[i].signal > 0)
+-			signal(SIGMINUS+blocks[i].signal, sighandler);
 +		if (blocks[i].signal > 0) {
- 			signal(SIGMINUS+blocks[i].signal, sighandler);
++ 			signal(SIGMINUS+blocks[i].signal, sighandler);
 +			sigaddset(&sa.sa_mask, SIGRTMIN+blocks[i].signal); // ignore signal when handling SIGUSR1
 +		}
 +	sa.sa_sigaction = buttonhandler;
@@ -75,19 +76,7 @@ diff -up a/dwmblocks.c b/dwmblocks.c
  #endif
  
  void sighandler(int signum)
-Only in b: dwmblocks.c.orig
-Only in b: dwmblocks.c.rej
-Common subdirectories: a/.git and b/.git
-diff -up a/Makefile b/Makefile
---- a/Makefile	2020-12-19 02:50:53.775788071 +0200
-+++ b/Makefile	2020-12-19 02:16:04.004440801 +0200
-@@ -2,7 +2,7 @@ PREFIX ?= /usr/local
- CC ?= cc
- 
- output: dwmblocks.c blocks.def.h blocks.h
--	${CC} `pkg-config --cflags x11 --libs x11` dwmblocks.c -o dwmblocks
-+	${CC} `pkg-config --cflags x11 --libs x11` dwmblocks.c -o dwmblocks -lX11
- blocks.h:
- 	cp blocks.def.h $@
- 
-Only in b: patches
+Only in a: dwmblocks-statuscmd-20200717-941f415.diff
+Only in a: .git
+Only in a: .gitignore
+Only in a: testpatch.diff
