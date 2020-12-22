@@ -1,8 +1,6 @@
-Only in a: blocks.h
-Only in a: dwmblocks
 diff -up a/dwmblocks.c b/dwmblocks.c
---- a/dwmblocks.c	2020-12-19 20:08:02.659269585 +0200
-+++ b/dwmblocks.c	2020-12-19 20:07:04.385060580 +0200
+--- a/dwmblocks.c	2020-12-22 14:25:05.289247774 +0200
++++ b/dwmblocks.c	2020-12-22 14:29:39.744943965 +0200
 @@ -28,6 +28,7 @@ typedef struct {
  void dummysighandler(int num);
  #endif
@@ -51,9 +49,8 @@ diff -up a/dwmblocks.c b/dwmblocks.c
 +	struct sigaction sa;
  	for (unsigned int i = 0; i < LENGTH(blocks); i++) {
 -		if (blocks[i].signal > 0)
--			signal(SIGMINUS+blocks[i].signal, sighandler);
 +		if (blocks[i].signal > 0) {
-+ 			signal(SIGMINUS+blocks[i].signal, sighandler);
+ 			signal(SIGMINUS+blocks[i].signal, sighandler);
 +			sigaddset(&sa.sa_mask, SIGRTMIN+blocks[i].signal); // ignore signal when handling SIGUSR1
 +		}
 +	sa.sa_sigaction = buttonhandler;
@@ -76,7 +73,3 @@ diff -up a/dwmblocks.c b/dwmblocks.c
  #endif
  
  void sighandler(int signum)
-Only in a: dwmblocks-statuscmd-20200717-941f415.diff
-Only in a: .git
-Only in a: .gitignore
-Only in a: testpatch.diff
